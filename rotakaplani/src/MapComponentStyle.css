@@ -1,0 +1,54 @@
+/* MyMapStyles.css */
+.sidebar {
+    height: 100vh;
+    width: 200px;
+    background-color: rgb(43, 46, 47);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    left: 0; /* Adjusted by React inline style */
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+    transition: left 0.3s ease-in-out;
+    z-index: 1000;
+  }
+  
+  .toggle-button {
+    position: absolute;
+    top: 20px;
+    /* Left property will be adjusted by React inline style */
+    z-index: 1001;
+    cursor: pointer;
+    padding: 10px 15px;
+    background-color: rgb(43, 46, 47);
+    border: none;
+    border-radius: 0 10px 10px 0;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: left 0.3s ease-in-out; /* Smooth transition for the button as well */
+}
+  
+  .sidebar-button {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+    min-width: 80px;
+  }
+  
+  /* Adjustments for the collapsed state */
+.sidebar-collapsed {
+    width: 25px; /* Adjust this width to how much you want to show */
+    overflow: hidden;
+    justify-content: hidden;
+}
+  
