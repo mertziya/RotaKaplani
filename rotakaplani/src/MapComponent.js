@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, LoadScript, Marker, Polyline, DirectionsRenderer } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, DirectionsRenderer } from '@react-google-maps/api';
 import './MapComponentStyle.css'; // Assuming your CSS file is in the same directory
 
 const mapContainerStyle = {
@@ -13,13 +13,14 @@ const customers = [
   { custNo: 2, xCoord: 41.0115, yCoord: 28.9679, demand: 1, readyTime: 20, dueDate: 100, serviceTime: 5 },
   { custNo: 3, xCoord: 41.0247, yCoord: 28.9252, demand: 1, readyTime: 30, dueDate: 100, serviceTime: 5 },
   { custNo: 4, xCoord: 41.0136, yCoord: 28.9499, demand: 1, readyTime: 40, dueDate: 100, serviceTime: 5 }
-];
+]; 
 
 const defaultCenter = { lat: 41.0082, lng: 28.9874 };
 
 const MyMap = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
-  const [mapsLoaded, setMapsLoaded] = useState(false); // State to track if maps library is loaded
+  const [mapsLoaded, setMapsLoaded] = useState(false);
+  const [directionsResponse, setDirectionsResponse] = useState(null); // State to track if maps library is loaded
 
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
@@ -35,40 +36,41 @@ const MyMap = () => {
     mapTypeControl: true,
     fullscreenControl: true,
     fullscreenControlOptions: {
-      position: window.google.maps.ControlPosition.RIGHT_TOP,
+      position: window.google.maps.ControlPosition.TOP_RIGHT,
     },
     mapTypeControlOptions: {
-      position: window.google.maps.ControlPosition.RIGHT_TOP,
+      position: window.google.maps.ControlPosition.TOP_RIGHT,
+      
     },
   } : {};
 
-  const [directionsResponse, setDirectionsResponse] = useState(null);
-
   useEffect(() => {
-    const directionsService = new window.google.maps.DirectionsService();
-  
-    const origin = customers[0]; // Start at the first customer
-    const destination = customers[0]; // End at the first customer for a round trip
-    // Include all other customers as waypoints
-    const waypoints = customers.slice(1).map(customer => ({
-      location: { lat: customer.xCoord, lng: customer.yCoord },
-      stopover: true,
-    }));
-  
-    directionsService.route({
-      origin: { lat: origin.xCoord, lng: origin.yCoord },
-      destination: { lat: destination.xCoord, lng: destination.yCoord },
-      waypoints: waypoints,
-      optimizeWaypoints: true,
-      travelMode: window.google.maps.TravelMode.DRIVING,
-    }, (result, status) => {
-      if (status === window.google.maps.DirectionsStatus.OK) {
-        setDirectionsResponse(result);
-      } else {
-        console.error(`Error fetching directions: ${result}`);
-      }
-    });
-  }, []); // Make sure dependencies are correct if you have any
+    // Check if the maps API is loaded before proceeding to use DirectionsService
+    if (mapsLoaded) {
+      const directionsService = new window.google.maps.DirectionsService();
+
+      const origin = customers[0];
+      const destination = customers[customers.length - 1];
+      const waypoints = customers.slice(1, customers.length - 1).map(customer => ({
+        location: { lat: customer.xCoord, lng: customer.yCoord },
+        stopover: true,
+      }));
+
+      directionsService.route({
+        origin: { lat: origin.xCoord, lng: origin.yCoord },
+        destination: { lat: destination.xCoord, lng: destination.yCoord },
+        waypoints: waypoints,
+        optimizeWaypoints: true,
+        travelMode: window.google.maps.TravelMode.DRIVING,
+      }, (result, status) => {
+        if (status === window.google.maps.DirectionsStatus.OK) {
+          setDirectionsResponse(result);
+        } else {
+          console.error(`Error fetching directions: ${result}`);
+        }
+      });
+    }
+  }, [mapsLoaded]); // Depend on mapsLoaded state to re-run effect when it changes // Make sure dependencies are correct if you have any
   
 
   return (
@@ -91,19 +93,20 @@ const MyMap = () => {
         ))}
       </div>
       {mapsLoaded && (
-         <GoogleMap
-         mapContainerStyle={{ width: '100%', height: '100vh' }}
-         center={defaultCenter}
-         zoom={8}
-       >
-         {directionsResponse && (
-  <DirectionsRenderer
-    directions={directionsResponse}
-    options={{
-      polylineOptions: {
-        strokeColor: "#0099FF", // Example: Solid red color for the route line
-        strokeOpacity: 1.0, // Full opacity (0.0 is fully transparent, 1.0 is fully opaque)
-        strokeWeight: 4, // Thickness of the route line
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={defaultCenter}
+          zoom={8}
+          options={mapOptions} // Ensure mapOptions are passed here
+        >
+          {directionsResponse && (
+            <DirectionsRenderer
+              directions={directionsResponse}
+              options={{
+              polylineOptions: {
+              strokeColor: "#0099FF", // Example: Solid red color for the route line
+              strokeOpacity: 1.0, // Full opacity (0.0 is fully transparent, 1.0 is fully opaque)
+              strokeWeight: 4, // Thickness of the route line
       },
       // Additional options can be added here if needed
     }}
