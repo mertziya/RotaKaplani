@@ -1,0 +1,66 @@
+/* MyMapStyles.css */
+/* Updated MyMapStyles.css for a Professional Look */
+.sidebar {
+  height: 100vh;
+  width: 200px;
+  background: #2D3E50; /* A professional dark blue */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  border-radius: 0 15px 15px 0; /* Slightly rounded corners for a softer look */
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 0;
+  transition: left 0.3s ease-in-out, width 0.3s ease-in-out;
+  z-index: 1000;
+  color: #ffffff; /* White text color for contrast */
+}
+
+.toggle-button {
+  position: absolute;
+  top: 20px;
+  z-index: 1001;
+  cursor: pointer;
+  padding: 10px 15px;
+  background: #4A5F73; /* A slightly lighter shade of blue for contrast */
+  border: none;
+  border-radius: 0 10px 10px 0;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: left 0.3s ease-in-out;
+}
+
+.sidebar-button {
+  background-color: #567189; /* Even lighter shade of blue */
+  border: none;
+  border-radius: 4px; /* Subtly rounded corners for the buttons */
+  padding: 10px 15px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  min-width: 80px;
+  transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effects */
+}
+
+.sidebar-button:hover {
+  background-color: #6B8DA4; /* A lighter blue for hover */
+  transform: translateY(-2px); /* Slight raise effect */
+}
+
+.sidebar-collapsed {
+  width: 25px; /* Narrower sidebar for collapsed state */
+  overflow: hidden;
+  justify-content: center;
+  border-radius: 0 15px 15px 0; /* Maintain border radius */
+}
+
+/* Add font-family to body or individual elements */
+body {
+  font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
