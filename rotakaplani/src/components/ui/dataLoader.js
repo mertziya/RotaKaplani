@@ -5,7 +5,6 @@ export const loadRoutes = async () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ /* Your request payload here */ })
     });
 
     console.log('Raw response:', response);
@@ -32,7 +31,12 @@ export const loadRoutes = async () => {
 
 export const processRoutes = (routes) => {
   const processedRoutes = {};
-
+  if (Array.isArray(routes)) {
+    console.log('routes is an array');
+  } else {
+    routes = JSON.parse(routes);
+  }
+  
   routes.forEach(route => {
     if (!processedRoutes[route.day]) {
       processedRoutes[route.day] = [];

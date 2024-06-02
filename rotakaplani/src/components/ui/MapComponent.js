@@ -131,9 +131,9 @@ const MyMap = () => {
         {sidebarVisible && (
           <>
             <button onClick={() => handleDayChange("all")} className="sidebar-button">All Days</button>
-            <button onClick={() => handleDayChange("0")} className="sidebar-button">Day 0</button>
-            <button onClick={() => handleDayChange("1")} className="sidebar-button">Day 1</button>
-            <button onClick={() => handleDayChange("2")} className="sidebar-button">Day 2</button>
+            <button onClick={() => handleDayChange("0")} className="sidebar-button">Day 1</button>
+            <button onClick={() => handleDayChange("1")} className="sidebar-button">Day 2</button>
+            <button onClick={() => handleDayChange("")} className="sidebar-button">Day 3</button>
             <div className="color-count">
               <strong>Number of Routes:</strong> {colorCount}
             </div>

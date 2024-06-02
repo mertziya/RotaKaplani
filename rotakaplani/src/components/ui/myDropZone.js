@@ -9,6 +9,8 @@ function MyDropzone({ onFileUploaded }) {
     const [errorMessage, setErrorMessage] = useState('');
     const [isFileUploaded, setIsFileUploaded] = useState(false);
     const [uploadedFile, setUploadedFile] = useState(null);
+    const [selection, setSelection] = useState("1");
+
     const navigate = useNavigate();
     const { mapData, setMapData } = useMapData();
 
@@ -19,6 +21,11 @@ function MyDropzone({ onFileUploaded }) {
         }
     }, [uploadedFile]);
 
+    const handleSelectionChange = (event) => {
+        setSelection(event.target.value);
+      };
+
+      
     const onDrop = useCallback(acceptedFiles => {
         setIsFileUploaded(false);
         setErrorMessage('');
@@ -68,11 +75,12 @@ function MyDropzone({ onFileUploaded }) {
 
         const formData = new FormData();
         formData.append('file', uploadedFile);
+        formData.append('selection', selection);
 
         try {
             const response = await axios.post('http://127.0.0.1:5050/optimize', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
                 }
             });
             setMapData(response.data.data); // Set map data
@@ -86,6 +94,11 @@ function MyDropzone({ onFileUploaded }) {
     return (
         <div {...getRootProps()} style={styles.dropzone}>
             <input {...getInputProps()} />
+            <h1>Select a value</h1>
+            <select value={selection} onChange={handleSelectionChange}>
+                <option value="1">Gurobi</option>
+                <option value="0">Heuristic</option>
+            </select>
             <button style={styles.button} onClick={open}>Upload Excel File</button>
             {isDragActive ? <p>Drop the Excel documents here...</p> : <p>Drag 'n' drop or click to select Excel documents</p>}
             {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
